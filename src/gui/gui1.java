@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.UIManager.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 /**
  *
@@ -121,7 +122,13 @@ public class gui1 extends javax.swing.JFrame {
         } else {
             String convertido = this.convertirMD5(textoIngresado);
             txtMD5.setText(convertido);
-            System.out.println(textoIngresado);
+            //System.out.println(textoIngresado);
+            Date fecha = new Date();
+            System.out.println("=============================================");
+            System.out.println("------"+fecha+"-------");
+            System.out.println("Cadena: "+textoIngresado);
+            System.out.println("MD5: "+convertido);
+            System.out.println("=============================================");
         }
     }//GEN-LAST:event_btnConvertirActionPerformed
 
