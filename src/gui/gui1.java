@@ -38,9 +38,9 @@ public class gui1 extends javax.swing.JFrame {
     protected String convertirMD5(String source) {
         String md5 = null;
         try {
-            MessageDigest mdEnc = MessageDigest.getInstance("MD5"); //Encryption algorithm
+            MessageDigest mdEnc = MessageDigest.getInstance("MD5"); //Algoritmo Digest
             mdEnc.update(source.getBytes(), 0, source.length());
-            md5 = new BigInteger(1, mdEnc.digest()).toString(16); // Encrypted string
+            md5 = new BigInteger(1, mdEnc.digest()).toString(16); // Pasar de Byte[] a String
         } catch (Exception ex) {
             return null;
         }
@@ -94,6 +94,8 @@ public class gui1 extends javax.swing.JFrame {
         });
 
         jLabel3.setText("SHA1");
+
+        txtSHA1.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
