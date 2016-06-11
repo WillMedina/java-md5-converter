@@ -46,6 +46,18 @@ public class gui1 extends javax.swing.JFrame {
         }
         return md5;
     }
+    
+    protected String convertirSHA1(String source) {
+        String sha1 = null;
+        try {
+            MessageDigest mdEnc = MessageDigest.getInstance("SHA1"); //Encryption algorithm
+            mdEnc.update(source.getBytes(), 0, source.length());
+            sha1 = new BigInteger(1, mdEnc.digest()).toString(16); // Encrypted string
+        } catch (Exception ex) {
+            return null;
+        }
+        return sha1;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,6 +73,8 @@ public class gui1 extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtMD5 = new javax.swing.JTextField();
         btnConvertir = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtSHA1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -79,6 +93,8 @@ public class gui1 extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("SHA1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -86,13 +102,15 @@ public class gui1 extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3)
                     .addComponent(jLabel2)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtMD5)
-                    .addComponent(btnConvertir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnConvertir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtSHA1))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -108,7 +126,11 @@ public class gui1 extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtMD5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtSHA1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -119,15 +141,19 @@ public class gui1 extends javax.swing.JFrame {
         txtMD5.setText("");
         if (textoIngresado.length() <= 0) {
             txtMD5.setText("No ha ingresado ningún texto");
+            txtSHA1.setText("No ha ingresado ningún texto");
         } else {
             String convertido = this.convertirMD5(textoIngresado);
+            String convertido2 = this.convertirSHA1(textoIngresado);
             txtMD5.setText(convertido);
+            txtSHA1.setText(convertido2);
             //System.out.println(textoIngresado);
             Date fecha = new Date();
             System.out.println("=============================================");
             System.out.println("------"+fecha+"-------");
             System.out.println("Cadena: "+textoIngresado);
             System.out.println("MD5: "+convertido);
+            System.out.println("SHA1: "+convertido2);
             System.out.println("=============================================");
         }
     }//GEN-LAST:event_btnConvertirActionPerformed
@@ -136,7 +162,9 @@ public class gui1 extends javax.swing.JFrame {
     private javax.swing.JButton btnConvertir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField txtIngreso;
     private javax.swing.JTextField txtMD5;
+    private javax.swing.JTextField txtSHA1;
     // End of variables declaration//GEN-END:variables
 }
