@@ -35,28 +35,16 @@ public class gui1 extends javax.swing.JFrame {
         initComponents();
     }
 
-    protected String convertirMD5(String source) {
+    protected String convertir(String source, String algo) {
         String md5 = null;
         try {
-            MessageDigest mdEnc = MessageDigest.getInstance("MD5"); //Algoritmo Digest
+            MessageDigest mdEnc = MessageDigest.getInstance(algo); //Algoritmo Digest            
             mdEnc.update(source.getBytes(), 0, source.length());
             md5 = new BigInteger(1, mdEnc.digest()).toString(16); // Pasar de Byte[] a String
         } catch (Exception ex) {
-            return null;
+            return ex.toString();
         }
         return md5;
-    }
-    
-    protected String convertirSHA1(String source) {
-        String sha1 = null;
-        try {
-            MessageDigest mdEnc = MessageDigest.getInstance("SHA1"); //Encryption algorithm
-            mdEnc.update(source.getBytes(), 0, source.length());
-            sha1 = new BigInteger(1, mdEnc.digest()).toString(16); // Encrypted string
-        } catch (Exception ex) {
-            return null;
-        }
-        return sha1;
     }
 
     /**
@@ -71,10 +59,10 @@ public class gui1 extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtIngreso = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtMD5 = new javax.swing.JTextField();
+        txtResultado = new javax.swing.JTextField();
         btnConvertir = new javax.swing.JButton();
+        txtAlgo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtSHA1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -82,20 +70,25 @@ public class gui1 extends javax.swing.JFrame {
 
         jLabel1.setText("Texto:");
 
-        jLabel2.setText("MD5");
+        jLabel2.setText("Resultado");
 
-        txtMD5.setEditable(false);
+        txtResultado.setEditable(false);
+        txtResultado.setFont(txtResultado.getFont());
 
+        btnConvertir.setBackground(new java.awt.Color(0, 204, 204));
         btnConvertir.setText("Convertir");
         btnConvertir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConvertirActionPerformed(evt);
             }
         });
+        btnConvertir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnConvertirKeyPressed(evt);
+            }
+        });
 
-        jLabel3.setText("SHA1");
-
-        txtSHA1.setEditable(false);
+        jLabel3.setText("Ingrese Algoritmo:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,16 +96,17 @@ public class gui1 extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtMD5)
-                    .addComponent(btnConvertir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtSHA1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel2)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtResultado)
+                        .addComponent(btnConvertir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtAlgo)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -123,16 +117,16 @@ public class gui1 extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(txtIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnConvertir, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtMD5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSHA1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addComponent(txtAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnConvertir, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
 
         pack();
@@ -140,33 +134,44 @@ public class gui1 extends javax.swing.JFrame {
 
     private void btnConvertirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertirActionPerformed
         String textoIngresado = txtIngreso.getText();
-        txtMD5.setText("");
-        if (textoIngresado.length() <= 0) {
-            txtMD5.setText("No ha ingresado ningún texto");
-            txtSHA1.setText("No ha ingresado ningún texto");
+        String textoAlgo = txtAlgo.getText();
+        txtResultado.setText("");
+        if (textoIngresado.length() <= 0 || textoAlgo.length() <= 0) {
+            txtResultado.setText("No ha ingresado ningún texto o falta el Algoritmo");
         } else {
-            String convertido = this.convertirMD5(textoIngresado);
-            String convertido2 = this.convertirSHA1(textoIngresado);
-            txtMD5.setText(convertido);
-            txtSHA1.setText(convertido2);
-            //System.out.println(textoIngresado);
             Date fecha = new Date();
-            System.out.println("=============================================");
-            System.out.println("------"+fecha+"-------");
-            System.out.println("Cadena: "+textoIngresado);
-            System.out.println("MD5: "+convertido);
-            System.out.println("SHA1: "+convertido2);
-            System.out.println("=============================================");
+            try {
+                String convertido = this.convertir(textoIngresado, textoAlgo);
+                txtResultado.setText(convertido);
+
+                System.out.println("=============================================");
+                System.out.println("------" + fecha + "-------");
+                System.out.println("Cadena: " + textoIngresado);
+                System.out.println("Algoritmo usado: " + textoAlgo);
+                System.out.println("Resultado: " + convertido);
+                System.out.println("=============================================");
+            } catch (Exception e) {
+                System.out.println("=============================================");
+                System.out.println("------" + fecha + "-------");
+                System.out.println("Se ha producido un error al tratar de convertir");
+                System.out.println(e);
+                System.out.println("=============================================");
+            }
+
         }
     }//GEN-LAST:event_btnConvertirActionPerformed
+
+    private void btnConvertirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnConvertirKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnConvertirKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConvertir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField txtAlgo;
     private javax.swing.JTextField txtIngreso;
-    private javax.swing.JTextField txtMD5;
-    private javax.swing.JTextField txtSHA1;
+    private javax.swing.JTextField txtResultado;
     // End of variables declaration//GEN-END:variables
 }
